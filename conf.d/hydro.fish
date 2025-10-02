@@ -37,24 +37,10 @@ function _hydro_postexec --on-event fish_postexec
 
     for code in $last_status
         if test $code -ne 0
-            set --global _hydro_status "$_hydro_color_error| "(echo $last_status)" $_hydro_newline$_hydro_color_prompt$_hydro_color_error$hydro_symbol_prompt"
+            set --global _hydro_status "$_hydro_newline$_hydro_color_prompt$_hydro_color_error$hydro_symbol_prompt"
             break
         end
     end
-
-    test "$CMD_DURATION" -lt $hydro_cmd_duration_threshold && set _hydro_cmd_duration && return
-
-    set --local secs (math --scale=1 $CMD_DURATION/1000 % 60)
-    set --local mins (math --scale=0 $CMD_DURATION/60000 % 60)
-    set --local hours (math --scale=0 $CMD_DURATION/3600000)
-
-    set --local out
-
-    test $hours -gt 0 && set --local --append out $hours"h"
-    test $mins -gt 0 && set --local --append out $mins"m"
-    test $secs -gt 0 && set --local --append out $secs"s"
-
-    set --global _hydro_cmd_duration "$out "
 end
 
 function _hydro_prompt --on-event fish_prompt
